@@ -12,12 +12,14 @@ namespace Services.CharacterService
 {
     public class CharacterService : ICharacterService
     {
+        /*         
         private static Character knight = new Character();
         private static List<Character> characters = new List<Character>{
             new Character(),
             new Character(){Id=1, Name = "Sam"},
             new Character(){Id=2, Name = "Adam"}
-        };
+        }; 
+        */
         private readonly IMapper _mapper;
         private readonly DataContext _context;
 
@@ -68,11 +70,11 @@ namespace Services.CharacterService
             }
         }
 
-        public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters()
+        public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters(int userId)
         {
             ServiceResponse<List<GetCharacterDto>> serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
             //serviceResponse.Data = _mapper.Map<List<GetCharacterDto>>(characters);
-            serviceResponse.Data = _mapper.Map<List<GetCharacterDto>>(await _context.Characters.ToListAsync());
+            serviceResponse.Data = _mapper.Map<List<GetCharacterDto>>(await _context.Characters.Where(p => p.User.Id == userId).ToListAsync());
             return serviceResponse;
         }
 
